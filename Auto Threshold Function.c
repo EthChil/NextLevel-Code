@@ -10,7 +10,6 @@ int calcThresh(tSensors sensor)
 	while(nPgmTime-startTime < 5000)
 	{
 
-		//put code here
 		if(getColorGrayscale(lightSensor) > white)
 		{
 			white = getColorGrayscale(lightSensor);

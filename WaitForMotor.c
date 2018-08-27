@@ -12,11 +12,11 @@ void waitForMotor(tMotor nMotorIndex) {
 
 task main()
 {
-setMotorTarget(LMotor,1000,50);
-setMotorTarget(RMotor,1000,50);
-waitForMotor(LMotor);
-setMotorTarget(LMotor,0,50);
-setMotorTarget(RMotor,0,50);
-waitForMotor(LMotor);
-stopAllMotors();
+	setMotorTarget(LMotor,1000,50);
+	setMotorTarget(RMotor,1000,50);
+	waitForMotor(LMotor);
+	setMotorTarget(LMotor,0,50);
+	setMotorTarget(RMotor,0,50);
+	waitForMotor(LMotor);
+	stopAllMotors();
 }

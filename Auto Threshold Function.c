@@ -75,10 +75,10 @@ task main()
 {
 //variable
 	int lsThresh = calcThresh(lightSensor);
-//
+//forward
 	setMotorSpeed(LMotor,50);
 	setMotorSpeed(RMotor,50);
-
+//detects when to stop
 	waitForBlack(lightSensor,lsThresh);
 	waitForWhite(lightSensor,lsThresh);
 	waitForBlack(lightSensor,lsThresh);

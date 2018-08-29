@@ -11,12 +11,14 @@ task main()
 	repeat(forever){
 		setMotorSpeed(LMotor, 50);
 		setMotorSpeed(RMotor, 50);
-
+		if (getColorGrayscale(lightSensorLeft) > ThresholdLeft && getColorGrayscale(lightSensorRight) > ThresholdRight){
+			setMotorSpeed(LMotor, 50);
+			setMotorSpeed(RMotor, 50);
+		}
 		if (getColorGrayscale(lightSensorLeft) < ThresholdLeft && getColorGrayscale(lightSensorRight) > ThresholdRight){
-				setMotorSpeed(LMotor, 70);
-				setMotorSpeed(RMotor, 30);
-				displayText(line3
-			}
+			setMotorSpeed(LMotor, 70);
+			setMotorSpeed(RMotor, 30);
+		}
 		if (getColorGrayscale(lightSensorRight) < ThresholdRight && getColorGrayscale(lightSensorLeft) > ThresholdLeft){
 			setMotorSpeed(LMotor, 30);
 			setMotorSpeed(RMotor, 70);

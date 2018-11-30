@@ -20,19 +20,16 @@ task main()
 		float turning = getJoystickValue(ChB);
 		float strafing = getJoystickValue(ChC);
 		float arming = getJoystickValue(ChD);
+		bool Lherding1 = getJoystickValue(BtnEUp);
+		bool Lherding2 = getJoystickValue(BtnEDown);
+		bool Rherding1 = getJoystickValue(BtnFUp);
+		bool Rherding2 = getJoystickValue(BtnFDown);
+		if(Lherding1 == false && Lherding2 == true) setMotortarget(LHerder, 45, 50);
+		if(Lherding1 == true && Lherding2 == false) setMotorTarget(LHerder, 0,50);
 
-		if(Lherding1 == false && Lherding2 = true) setmotortarget(LHerder, 45, 50);
-		if(Lherding1 == true && Lherding2 = false) setMotorTarget(LHerder, 0,50);
 
-
-		if(Rherding1 = false && Rherding2 = true) setmotortarget(RHerder, 45, 50);
-		if(Rherding1 == true && Rherding2 = false) setMotorTarget(RHerder, 0,50);
-
-		float Lherding1 == getJoystickValue(BtnEUp);
-		float Lherding2 == getJoystickValue(BtnEDown);
-
-		float Rherding1 == getJoystickValue(BtnFUp);
-		float Rherding2 == getJoystickValue(BtnFDown);
+		if(Rherding1 == false && Rherding2 == true) setmotortarget(RHerder, 45, 50);
+		if(Rherding1 == true && Rherding2 == false) setMotorTarget(RHerder, 0,50);
 
 
 		//check if controller value is small enough
@@ -40,13 +37,9 @@ task main()
 		//this accounts for the poor build of certain controllers minimizing drift
 		//abs will remove the negative sign from a number
 		if(abs(moving) < 0.1) moving = 0;
-		if(abs(turning) < 0.1) turn = 0;
+		if(abs(turning) < 0.1) turning = 0;
 		if(abs(strafing) < 0.1) strafing = 0;
 		if(abs(arming) < 0.1) arming = 0;
-		if(abs(Lherding1) < 0.1) Lherding1 = 0;
-		if(abs(Lherding2) < 0.1) Lherding2 = 0;
-		if(abs(Rherding1) < 0.1) Rherding1 = 0;
-		if(abs(Rherding2) < 0.1) Rherding2 = 0;
 
 		//Set the drive motors
 		//this is an arcade format

@@ -15,6 +15,9 @@ task main()
 
 	int Lherding1, Lherding2, Rherding1, Rherding2;
 
+	unsigned long LHerderTime, RHerderTime;
+	bool ROverride, LOverride;
+
 	while(true){
 		//Grab the joystick values and save them into variables
 		//The float type means floating point or decimal
@@ -23,12 +26,18 @@ task main()
 		float strafeInput = getJoystickValue(ChC);
 		float armInput = getJoystickValue(ChD);
 
-		if(Lherding1 == false && getJoystickValue(BtnEUp) == true) setMotorTarget(LHerder, 75, 50);
-		if(Lherding2 == false && getJoystickValue(BtnEDown) == true) setMotorTarget(LHerder, 0,50);
+		if(Lherding1 == false && getJoystickValue(BtnEUp) == true) {setMotorTarget(LHerder, 75, 50); LOverride = true;}
+		if(Lherding2 == false && getJoystickValue(BtnEDown) == true) {LHerderTime = nPgmTime+1000; LOverride = false;}
+
+		if(LHerderTime > nPgmTime && !LOverride) setMotor(LHerder, -25);
+		else if(!LOverride) setMotor(LHerder, 0);
 
 
-		if(Rherding1 == true && getJoystickValue(BtnFUp) == false) setMotorTarget(RHerder, 75, 50);
-		if(Rherding2 == true && getJoystickValue(BtnFDown) == false) setMotorTarget(RHerder, 0,50);
+		if(Rherding1 == true && getJoystickValue(BtnFUp) == false) {setMotorTarget(RHerder, 75, 50); ROverride = true;}
+		if(Rherding2 == true && getJoystickValue(BtnFDown) == false) {RHerderTime = nPgmTime+1000; ROverride = false;}
+
+		if(RHerderTime > nPgmTime && !ROverride) setMotor(RHerder, -25);
+		else if(!ROverride) setMotor(RHerder, 0);
 
 
 		Lherding1 = getJoystickValue(BtnEUp);
@@ -40,10 +49,10 @@ task main()
 		//if it is make it zero
 		//this accounts for the poor build of certain controllers minimizing drift
 		//abs will remove the negative sign from a number
-		if(abs(speedInput) < 0.1) speedInput = 0;
-		if(abs(turnInput) < 0.1) turnInput = 0;
-		if(abs(strafeInput) < 0.1) strafeInput = 0;
-		if(abs(armInput) < 0.1) armInput = 0;
+		if(abs(speedInput) < 0.3) speedInput = 0;
+		if(abs(turnInput) < 0.3) turnInput = 0;
+		if(abs(strafeInput) < 0.3) strafeInput = 0;
+		if(abs(armInput) < 0.3) armInput = 0;
 
 		//Set the drive motors
 		//this is an arcade format
@@ -65,6 +74,11 @@ task main()
 		else{
 			setMotor(Arm, armInput);
 			setMotor(Strafe, strafeInput);
+
+
+
+
+
 		}
 	}
 

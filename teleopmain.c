@@ -11,11 +11,11 @@ task main()
 	//CHA Vertical Travel
 	//CHB Yaw
 	//CHC Horizontal Travel
+
+	int Lherding1, Lherding2, Rherding1, Rherding2, ReadyGrab, Grab;
 	//CHD Arm
-
-	int Lherding1, Lherding2, Rherding1, Rherding2;
-
 	unsigned long LHerderTime, RHerderTime;
+
 	bool ROverride, LOverride;
 
 	while(true){
@@ -26,33 +26,46 @@ task main()
 		float strafeInput = getJoystickValue(ChC);
 		float armInput = getJoystickValue(ChD);
 
-		if(Lherding1 == false && getJoystickValue(BtnEUp) == true) {setMotorTarget(LHerder, 75, 50); LOverride = true;}
-		if(Lherding2 == false && getJoystickValue(BtnEDown) == true) {LHerderTime = nPgmTime+1000; LOverride = false;}
+
+		if(Lherding1 == false && getJoystickValue(BtnEUp) == true) {setMotorTarget(LHerder, 75, 25); LOverride = true;}
+		if(Lherding2 == false && getJoystickValue(BtnEDown) == true) {LHerderTime = nPgmTime+500; LOverride = false;}
+
+
+
 
 		if(LHerderTime > nPgmTime && !LOverride) setMotor(LHerder, -25);
 		else if(!LOverride) setMotor(LHerder, 0);
 
-
-		if(Rherding1 == true && getJoystickValue(BtnFUp) == false) {setMotorTarget(RHerder, 75, 50); ROverride = true;}
-		if(Rherding2 == true && getJoystickValue(BtnFDown) == false) {RHerderTime = nPgmTime+1000; ROverride = false;}
+		if(Rherding1 == false && getJoystickValue(BtnFUp) == true) {setMotorTarget(RHerder, 75, 25); ROverride = true;}
+		if(Rherding2 == false && getJoystickValue(BtnFDown) == true) {RHerderTime = nPgmTime+500; ROverride = false;}
 
 		if(RHerderTime > nPgmTime && !ROverride) setMotor(RHerder, -25);
 		else if(!ROverride) setMotor(RHerder, 0);
 
+		if(ReadyGrab == false && getJoystickValue(BtnLUp) == true) {setMotorTarget(Arm, 325, 100); sleep(750);}
+		if(Grab == false && getJoystickValue(BtnRUp) == true){
+			setMotorTarget(Arm, 300, 100);
+			setMotor(LMotor, 50);
+			setMotor(RMotor, 50);
+			sleep(750);
+		}
 
 		Lherding1 = getJoystickValue(BtnEUp);
 		Lherding2 = getJoystickValue(BtnEDown);
 		Rherding1 = getJoystickValue(BtnFUp);
 		Rherding2 = getJoystickValue(BtnFDown);
 
+		ReadyGrab = getJoystickValue(BtnLUp);
+		Grab = getJoystickValue(BtnRUp);
+
 		//check if controller value is small enough
 		//if it is make it zero
 		//this accounts for the poor build of certain controllers minimizing drift
 		//abs will remove the negative sign from a number
-		if(abs(speedInput) < 0.3) speedInput = 0;
-		if(abs(turnInput) < 0.3) turnInput = 0;
-		if(abs(strafeInput) < 0.3) strafeInput = 0;
-		if(abs(armInput) < 0.3) armInput = 0;
+		if(abs(speedInput) < 0.2) speedInput = 0;
+		if(abs(turnInput) < 0.2) turnInput = 0;
+		if(abs(strafeInput) < 0.4) strafeInput = 0;
+		if(abs(armInput) < 0.4) armInput = 0;
 
 		//Set the drive motors
 		//this is an arcade format

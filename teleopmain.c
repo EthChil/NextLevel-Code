@@ -17,7 +17,7 @@ task main()//Shawn, Max, Daniel, And Even wrote this wonderful program
 	//CHD Arm
 	unsigned long LHerderTime, RHerderTime;
 
-	bool LisUp, RisUp, LOverride, ROverride;
+	bool LisUp, RisUp, LOverride, ROverride, LisMid, RisMid;
 
 	setMotorBrakeMode(LHerder, motorBrake);
 	setMotorBrakeMode(RHerder, motorBrake);
@@ -30,7 +30,7 @@ task main()//Shawn, Max, Daniel, And Even wrote this wonderful program
 		float armInput = getJoystickValue(ChD);
 
 
-		if(Lherding1 == false && getJoystickValue(BtnEUp) == true) {
+		if(getJoystickValue(BtnEUp) == true && LHerderTime < nPgmTime) {
 			LOverride = false;
 			if(LisUp){
 				setMotorBrakeMode(LHerder, motorBrake);
@@ -44,9 +44,18 @@ task main()//Shawn, Max, Daniel, And Even wrote this wonderful program
 		}
 
 		if(Lherding2 == false && getJoystickValue(BtnEDown) == true) {
-			setMotorTarget(LHerder, 30, 25);
-			LHerderTime = nPgmTime;
-			LOverride = true;
+			if(LisMid){
+				setMotorBrakeMode(LHerder, motorBrake);
+				LHerderTime = nPgmTime + 1000;
+				LisUp = false;
+				LisMid = false;
+			}
+			else{
+				setMotorTarget(LHerder, 30, 25);
+				LHerderTime = nPgmTime;
+				LOverride = true;
+				LisMid = true;
+			}
 		}
 
 		if(LHerderTime > nPgmTime) {
@@ -57,7 +66,7 @@ task main()//Shawn, Max, Daniel, And Even wrote this wonderful program
 
 		//RIGHT HERDER
 		//Handle toggle btn
-		if(Rherding1 == false && getJoystickValue(BtnFUp) == true) {
+		if(getJoystickValue(BtnFUp) == true && RHderderTime < nPgmTime) {
 			ROverride = false;
 			if(RisUp){
 				setMotorBrakeMode(RHerder, motorBrake);
@@ -72,9 +81,18 @@ task main()//Shawn, Max, Daniel, And Even wrote this wonderful program
 
 		//Handle mid pos btn
 		if(Rherding2 == false && getJoystickValue(BtnFDown) == true) {
-			setMotorTarget(RHerder, 30, 25);
-			RHerderTime = nPgmTime;
-			ROverride = true;
+			if(RisMid){
+				setMotorBrakeMode(RHerder, motorBrake);
+				RHerderTime = nPgmTime + 1000;
+				RisUp = false;
+				RisMid = false;
+			}
+			else{
+				setMotorTarget(RHerder, 30, 25);
+				LHerderTime = nPgmTime;
+				ROverride = true;
+				RisMid = true;
+			}
 		}
 
 		//Handle movement
@@ -85,12 +103,12 @@ task main()//Shawn, Max, Daniel, And Even wrote this wonderful program
 		else if(!ROverride) setMotor(RHerder, 0);
 
 
-		if(ReadyGrab == false && getJoystickValue(BtnLUp) == true) {setMotorTarget(Arm, 325, 100); sleep(750);}
+		if(ReadyGrab == false && getJoystickValue(BtnLUp) == true) {setMotorTarget(Arm, 325, 100); sleep(1250);}
 		if(Grab == false && getJoystickValue(BtnRUp) == true){
 			setMotorTarget(Arm, 300, 100);
 			setMotor(LMotor, -50);
 			setMotor(RMotor, -50);
-			sleep(750);
+			sleep(1250);
 		}
 
 		Lherding1 = getJoystickValue(BtnEUp);
@@ -111,8 +129,8 @@ task main()//Shawn, Max, Daniel, And Even wrote this wonderful program
 
 		//Set the drive motors
 		//this is an arcade format
-		setMotor(LMotor, speedInput+turnInput);
-		setMotor(RMotor, speedInput-turnInput);
+		setMotor(LMotor, speedInput-turnInput);
+		setMotor(RMotor, speedInput+turnInput);
 
 		//Set the arm and strafe motors
 
@@ -128,11 +146,6 @@ task main()//Shawn, Max, Daniel, And Even wrote this wonderful program
 		}
 		else{
 			setMotor(Arm, armInput);
-
-
-
-
-
 		}
 	}
 

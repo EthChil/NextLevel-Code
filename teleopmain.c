@@ -107,12 +107,14 @@ task main()//Shawn, Max, Daniel, And Even wrote this wonderful program
 		else if(!ROverride) setMotor(RHerder, 0);
 
 
-		if(ReadyGrab == false && getJoystickValue(BtnLUp) == true) {setMotorTarget(Arm, 325, 100); sleep(1250);}
+		if(ReadyGrab == false && getJoystickValue(BtnLUp) == true) {setMotorTarget(Arm, 310, 100); sleep(1250);}
 		if(Grab == false && getJoystickValue(BtnRUp) == true){
-			setMotorTarget(Arm, 300, 100);
+			setMotorTarget(Arm, 275, 100);
 			setMotor(LMotor, -50);
 			setMotor(RMotor, -50);
-			sleep(1250);
+			sleep(1000);
+			setMotorTarget(Arm, 300, 100);
+			sleep(1000);
 		}
 
 		Lherding1 = getJoystickValue(BtnEUp);

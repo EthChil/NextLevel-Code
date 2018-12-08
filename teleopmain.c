@@ -51,7 +51,7 @@ task main()//Shawn, Max, Daniel, And Even wrote this wonderful program
 				LisMid = false;
 			}
 			else{
-				setMotorTarget(LHerder, 30, 25);
+				setMotorTarget(LHerder, 45, 25);
 				LHerderTime = nPgmTime;
 				LOverride = true;
 				LisMid = true;
@@ -66,7 +66,7 @@ task main()//Shawn, Max, Daniel, And Even wrote this wonderful program
 
 		//RIGHT HERDER
 		//Handle toggle btn
-		if(getJoystickValue(BtnFUp) == true && RHderderTime < nPgmTime) {
+		if(getJoystickValue(BtnFUp) == true && RHerderTime < nPgmTime) {
 			ROverride = false;
 			if(RisUp){
 				setMotorBrakeMode(RHerder, motorBrake);
@@ -88,7 +88,7 @@ task main()//Shawn, Max, Daniel, And Even wrote this wonderful program
 				RisMid = false;
 			}
 			else{
-				setMotorTarget(RHerder, 30, 25);
+				setMotorTarget(RHerder, 45, 25);
 				LHerderTime = nPgmTime;
 				ROverride = true;
 				RisMid = true;

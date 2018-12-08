@@ -74,10 +74,12 @@ task main()//Shawn, Max, Daniel, And Even wrote this wonderful program
 				setMotorBrakeMode(RHerder, motorBrake);
 				RHerderTime = nPgmTime + 1000;
 				RisUp = false;
+				RisMid = false;
 			}else{
 				setMotorBrakeMode(RHerder, motorHold);
 				RHerderTime = nPgmTime + 1000;
 				RisUp = true;
+				RisMid = false;
 			}
 		}
 

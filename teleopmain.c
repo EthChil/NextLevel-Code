@@ -113,8 +113,10 @@ task main()//Shawn, Max, Daniel, And Even wrote this wonderful program
 			setMotor(LMotor, -50);
 			setMotor(RMotor, -50);
 			sleep(1000);
-			setMotorTarget(Arm, 300, 100);
-			sleep(1000);
+			setMotorTarget(Arm, 320, 100);
+			setMotor(LMotor, 0);
+			setMotor(RMotor, 0);
+			sleep(750);
 		}
 
 		Lherding1 = getJoystickValue(BtnEUp);

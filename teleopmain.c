@@ -36,10 +36,12 @@ task main()//Shawn, Max, Daniel, And Even wrote this wonderful program
 				setMotorBrakeMode(LHerder, motorBrake);
 				LHerderTime = nPgmTime + 1000;
 				LisUp = false;
+				LisMid = false;
 			}else{
 				setMotorBrakeMode(LHerder, motorHold);
 				LHerderTime = nPgmTime + 1000;
 				LisUp = true;
+				LisMid = false;
 			}
 		}
 

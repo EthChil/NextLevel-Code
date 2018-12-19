@@ -87,18 +87,17 @@ void wait4lines(tSensors sens,int threshold ,int numLines)
 task main()
 {
 
-//variable
-	int lsThresh = calcThresh(LightSensor);
-//forward
-	setMotorSpeed(LMotor,50);
-	setMotorSpeed(RMotor,50);
-//detects when to stop
-	waitForBlack(LightSensor,lsThresh);
-	waitForWhite(LightSensor,lsThresh);
-	waitForBlack(LightSensor,lsThresh);
-//Stop motors
-	stopAllMotors();
+	//INIT
+	//Wait for sensors to start up
+	writeDebugStreamLine("%d", getColorGrayscale(lightSensor));
+	sleep(1000);
 
+	//Tap touch sensor to start threshold calculation
+	//run threshold calculation
+	//print thresholds on the screen
 
+	//Wait for tap sensor
+	//Start main program
+  //variable
 
 }

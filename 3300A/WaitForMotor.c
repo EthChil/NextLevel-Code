@@ -4,9 +4,9 @@
 
 void waitForMotor(tMotor nMotorIndex) {
 
-	while(getMotorZeroVelocity(nMotorIndex)){sleep(10);}
+	while(getMotorZeroVelocity(nMotorIndex)){sleep(10);} //wait for the motor to start moving
 
-	while(!getMotorZeroVelocity(nMotorIndex)){sleep(10);}
+	while(!getMotorZeroVelocity(nMotorIndex)){sleep(10);} //wait for the motor to stop moving
 }
 
 

@@ -132,6 +132,7 @@ task main()
 	resetMotorEncoder(LHerder);
 	resetMotorEncoder(RHerder);
 
+	//MAIN PROGRAM
 
 	//Herders up
 	setMotorTarget(LHerder, 50, 20);
@@ -142,15 +143,16 @@ task main()
 	setMotor(RMotor, -10);
 	waitUntil(getGyroDegrees(Gyro) < -45);
 	waitForBlack(RFLs, RFLsThresh);
-
+/*
 	while(getColorGrayscale(MLs) > MLsThresh){
 		lineFollow(RFLs, 50, 30, RFLsThresh);
 	}
 
+
+
+	/**/
 	//Turn 45 degrees then start waiting on the lightSensor
 	//Agressive line follow
-
-
 }
 //run threshold calculationcolorRedViolet
 

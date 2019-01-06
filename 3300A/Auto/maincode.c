@@ -122,14 +122,14 @@ task main()
 	waitUntil(getTouchLEDValue(TouchSensor));
 
 	resetGyro(Gyro);
+
 	resetMotorEncoder(LMotor);
-
 	resetMotorEncoder(RMotor);
+
 	resetMotorEncoder(LArm);
-
 	resetMotorEncoder(RArm);
-	resetMotorEncoder(LHerder);
 
+	resetMotorEncoder(LHerder);
 	resetMotorEncoder(RHerder);
 
 
@@ -139,7 +139,7 @@ task main()
 
 	//Turn 45 degrees
 	setMotor(LMotor, 75);
-	setMotor(RMotor, 50);
+	setMotor(RMotor, -10);
 	waitUntil(getGyroDegrees(Gyro) < -45);
 	waitForBlack(RFLs, RFLsThresh);
 

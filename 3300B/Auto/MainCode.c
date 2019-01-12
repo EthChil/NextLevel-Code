@@ -302,7 +302,7 @@ task main()
 				LisMid = false;
 			}
 			else{
-				setMotorTarget(LHerder, 45, 25);
+				setMotorTarget(LHerder, 60, 25);
 				LHerderTime = nPgmTime;
 				LOverride = true;
 				LisMid = true;
@@ -341,7 +341,7 @@ task main()
 				RisMid = false;
 			}
 			else{
-				setMotorTarget(RHerder, 45, 25);
+				setMotorTarget(RHerder, 60, 25);
 				LHerderTime = nPgmTime;
 				ROverride = true;
 				RisMid = true;
@@ -382,9 +382,9 @@ task main()
 		//if it is make it zero
 		//this accounts for the poor build of certain controllers minimizing drift
 		//abs will remove the negative sign from a number
-		if(abs(speedInput) < 0.2) speedInput = 0;
+		if(abs(speedInput) < 0.3) speedInput = 0;
 		if(abs(turnInput) < 0.2) turnInput = 0;
-		if(abs(armInput) < 0.6) armInput = 0;
+		if(abs(armInput) < 0.7) armInput = 0;
 
 		//Set the drive motors
 		//this is an arcade format
@@ -401,7 +401,7 @@ task main()
 			setMotor(LArm,0);
 			setMotor(RArm, 0);
 		}
-		if(getMotorEncoder(LArm) >= 1000 && armInput > 0){
+		if(getMotorEncoder(LArm) >= 2100 && armInput > 0){
 			setMotor(LArm,0);
 			setMotor(RArm, 0);
 		}

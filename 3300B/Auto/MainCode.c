@@ -1,4 +1,5 @@
 #pragma config(Sensor, port7,  TouchSensor,    sensorVexIQ_LED)
+#pragma config(Sensor, port8,  RBLs,           sensorVexIQ_ColorGrayscale)
 #pragma config(Sensor, port9,  Gyro,           sensorVexIQ_Gyro)
 #pragma config(Sensor, port11, MLs,            sensorVexIQ_ColorGrayscale)
 #pragma config(Sensor, port12, RFLs,           sensorVexIQ_ColorGrayscale)
@@ -93,7 +94,7 @@ void lineFollow(tSensors sensor, int LSpeed, int RSpeed, int Thresh){
 task main()
 {
 
-	int RFLsThresh, MLsThresh;
+	int RFLsThresh, MLsThresh, RBLsThresh;
 
 	//INIT
 	//Wait for sensors to start up
@@ -108,8 +109,8 @@ task main()
 	//MLsThresh = calcThresh(MLs);
 	//RFLsThresh = calcThresh(RFLs);
 
-	MLsThresh = 80;
-	RFLsThresh = 80;
+	MLsThresh = 90;
+	RFLsThresh = 90;
 
 
 	displayTextLine(line1, "RFLs = %d", RFLsThresh);
@@ -153,21 +154,84 @@ task main()
 	while(getColorGrayscale(MLs) < MLsThresh){
 		lineFollow(RFLs, 50, 20, RFLsThresh);
 	}
+	sleep(500);
 	while(getColorGrayscale(MLs) > MLsThresh){
 		lineFollow(RFLs, 50, 20, RFLsThresh);
 	}
+	sleep(500);
 	while(getColorGrayscale(MLs) < MLsThresh){
 		lineFollow(RFLs, 50, 30, RFLsThresh);
 	}
+	sleep(500);
 	while(getColorGrayscale(MLs) > MLsThresh){
 		lineFollow(RFLs, 50, 32, RFLsThresh);
 	}
 
 	resetGyro(Gyro);
+	resetMotorEncoder(RHerder);
+	resetMotorEncoder(LHerder);
 
-	setMotor(LMotor, 10);
-	setMotor(RMotor, 20);
-	waitUntil(getGyroDegrees(Gyro) >= 20);
+	setMotor(LMotor, -35);
+	setMotor(RMotor, 35);
+	waitUntil(getGyroDegrees(Gyro) > 10);
+
+	setMotor(RHerder, -50);
+	sleep(750);
+	setMotor(RHerder, 0);
+
+	resetGyro(Gyro);
+
+	setMotor(LMotor, 35);
+	setMotor(RMotor, -35);
+	waitUntil(getGyroDegrees(Gyro) < -10);
+
+	repeat(forever){
+
+	if(getColorValue(RFLs) < 90 && getColorValue(RBLs) < 90){
+		setMotor(LMotor, 50);
+		setMotor(RMotor, 60);
+	}
+
+	if(getColorValue(RFLs) > 90 && getColorValue(RBLs) < 90){
+		setMotor(LMotor, 60);
+		setMotor(RMotor, 50);
+
+	}
+	if(getColorValue(RFLs) < 90 && getColorValue(RBLs) > 90){
+		setMotor(LMotor, 50);
+		setMotor(RMotor, 50);
+	}
+	if(getColorValue(RFLs) > 90 && getColorValue(RBLs) > 90){
+		setMotor(LMotor, 50);
+		setMotor(RMotor, 50);
+	}
+}
+
+	/*
+
+		while(getColorGrayscale(MLs) < MLsThresh){
+		lineFollow(RBLs, -50, -20,RBLsThresh );
+	}
+	sleep(500);
+	while(getColorGrayscale(MLs) > MLsThresh){
+		lineFollow(RBLs, -50, -20,RBLsThresh );
+	}
+	sleep(500);
+	while(getColorGrayscale(MLs) < MLsThresh){
+		lineFollow(RBLs, -50, -30,RBLsThresh );
+	}
+	sleep(500);
+	while(getColorGrayscale(MLs) > MLsThresh){
+		lineFollow(RBLs, - 50, -32,RBLsThresh );
+}
+
+	resetGyro(Gyro);
+
+	setMotor(LMotor, -35);
+	setMotor(RMotor, 35);
+	waitUntil(getGyroDegrees(Gyro) > 7);
+
+
 
 	//Turn 45 degrees then start waiting on the lint Sensor
 	//Agressive line follow

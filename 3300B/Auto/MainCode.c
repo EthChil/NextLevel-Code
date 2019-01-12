@@ -90,8 +90,7 @@ void lineFollow(tSensors sensor, int LSpeed, int RSpeed, int Thresh){
 //3. check if that is blacker than our blackest black
 //Calcuate threshhold
 
-//main task
-task main()
+task auto()
 {
 
 	int RFLsThresh, MLsThresh, RBLsThresh;
@@ -187,25 +186,27 @@ task main()
 
 	repeat(forever){
 
-	if(getColorValue(RFLs) < 90 && getColorValue(RBLs) < 90){
+	if(getColorValue(RFLs) < RFLsThresh && getColorValue(RBLs) < RBLsThresh){
+		setMotor(LMotor, 60);
+		setMotor(RMotor, 50);
+	}
+
+	if(getColorValue(RFLs) > RFLsThresh && getColorValue(RBLs) < RBLsThresh){
+		setMotor(LMotor, 50);
+		setMotor(RMotor, 50);
+
+	}
+	if(getColorValue(RFLs) < RFLsThresh && getColorValue(RBLs) > RBLsThresh){
 		setMotor(LMotor, 50);
 		setMotor(RMotor, 60);
 	}
-
-	if(getColorValue(RFLs) > 90 && getColorValue(RBLs) < 90){
-		setMotor(LMotor, 60);
-		setMotor(RMotor, 50);
-
-	}
-	if(getColorValue(RFLs) < 90 && getColorValue(RBLs) > 90){
-		setMotor(LMotor, 50);
-		setMotor(RMotor, 50);
-	}
-	if(getColorValue(RFLs) > 90 && getColorValue(RBLs) > 90){
+	if(getColorValue(RFLs) > RFLsThresh && getColorValue(RBLs) > RBLsThresh){
 		setMotor(LMotor, 50);
 		setMotor(RMotor, 50);
 	}
 }
+
+
 
 	/*
 
@@ -248,4 +249,165 @@ task main()
 	//Start main program
 	//variable
 
+}
+
+//main task
+task main()
+{
+	startTask(auto);
+	while(getJoystickValue(BtnEUp) == false){ sleep(10); }
+	stopTask(auto);
+
+	//CHA Vertical Travel
+	//CHB Yaw
+	//CHC Horizontal Travel
+	//CHD Heyo Hoeyo
+	int Lherding1, Lherding2, Rherding1, Rherding2, ReadyGrab, Grab;
+	//CHD Arm
+	unsigned long LHerderTime, RHerderTime;
+
+	bool LisUp, RisUp, LOverride, ROverride, LisMid, RisMid;
+
+	setMotorBrakeMode(LHerder, motorBrake);
+	setMotorBrakeMode(RHerder, motorBrake);
+
+	while(true){
+		//Grab the joystick values and save them into variables
+		//The float type means floating point or decimal
+		float speedInput = getJoystickValue(ChA);
+		float turnInput = getJoystickValue(ChC);
+		float armInput = getJoystickValue(ChD);
+
+
+		if(getJoystickValue(BtnEUp) == true && LHerderTime < nPgmTime) {
+			LOverride = false;
+			if(LisUp){
+				setMotorBrakeMode(LHerder, motorBrake);
+				LHerderTime = nPgmTime + 1000;
+				LisUp = false;
+				LisMid = false;
+			}else{
+				setMotorBrakeMode(LHerder, motorHold);
+				LHerderTime = nPgmTime + 1000;
+				LisUp = true;
+				LisMid = false;
+			}
+		}
+
+		if(Lherding2 == false && getJoystickValue(BtnEDown) == true) {
+			if(LisMid){
+				setMotorBrakeMode(LHerder, motorBrake);
+				LHerderTime = nPgmTime + 1000;
+				LisUp = false;
+				LisMid = false;
+			}
+			else{
+				setMotorTarget(LHerder, 45, 25);
+				LHerderTime = nPgmTime;
+				LOverride = true;
+				LisMid = true;
+			}
+		}
+
+		if(LHerderTime > nPgmTime) {
+			if(LisUp) setMotor(LHerder, 25);
+			else setMotor(LHerder, -25);
+		}
+		else if(!LOverride) setMotor(LHerder, 0);
+
+		//RIGHT HERDER
+		//Handle toggle btn
+		if(getJoystickValue(BtnFUp) == true && RHerderTime < nPgmTime) {
+			ROverride = false;
+			if(RisUp){
+				setMotorBrakeMode(RHerder, motorBrake);
+				RHerderTime = nPgmTime + 1000;
+				RisUp = false;
+				RisMid = false;
+			}else{
+				setMotorBrakeMode(RHerder, motorHold);
+				RHerderTime = nPgmTime + 1000;
+				RisUp = true;
+				RisMid = false;
+			}
+		}
+
+		//Handle mid pos btn
+		if(Rherding2 == false && getJoystickValue(BtnFDown) == true) {
+			if(RisMid){
+				setMotorBrakeMode(RHerder, motorBrake);
+				RHerderTime = nPgmTime + 1000;
+				RisUp = false;
+				RisMid = false;
+			}
+			else{
+				setMotorTarget(RHerder, 45, 25);
+				LHerderTime = nPgmTime;
+				ROverride = true;
+				RisMid = true;
+			}
+		}
+
+		//Handle movement
+		if(RHerderTime > nPgmTime) {
+			if(RisUp) setMotor(RHerder, 25);
+			else setMotor(RHerder, -25);
+		}
+		else if(!ROverride) setMotor(RHerder, 0);
+
+
+		if(ReadyGrab == false && getJoystickValue(BtnLUp) == true) {setMotorTarget(LArm, 310, 100); sleep(1250); setMotorTarget(RArm, 310, 100);}
+		if(Grab == false && getJoystickValue(BtnRUp) == true){
+			setMotorTarget(LArm, 275, 100);
+			setMotorTarget(RArm, 275, 100);
+			setMotor(LMotor, -50);
+			setMotor(RMotor, -50);
+			sleep(1000);
+			setMotorTarget(LArm, 320, 100);
+			setMotorTarget(RArm, 320, 100);
+			setMotor(LMotor, 0);
+			setMotor(RMotor, 0);
+			sleep(750);
+		}
+
+		Lherding1 = getJoystickValue(BtnEUp);
+		Lherding2 = getJoystickValue(BtnEDown);
+		Rherding1 = getJoystickValue(BtnFUp);
+		Rherding2 = getJoystickValue(BtnFDown);
+
+		ReadyGrab = getJoystickValue(BtnLUp);
+		Grab = getJoystickValue(BtnRUp);
+
+		//check if controller value is small enough
+		//if it is make it zero
+		//this accounts for the poor build of certain controllers minimizing drift
+		//abs will remove the negative sign from a number
+		if(abs(speedInput) < 0.2) speedInput = 0;
+		if(abs(turnInput) < 0.2) turnInput = 0;
+		if(abs(armInput) < 0.6) armInput = 0;
+
+		//Set the drive motors
+		//this is an arcade format
+		setMotor(LMotor, speedInput-turnInput);
+		setMotor(RMotor, speedInput+turnInput);
+
+		//Set the arm and strafe motors
+
+
+
+		//TODO: add safety
+
+		if(getMotorEncoder(LArm) <= 0 && armInput < 0){
+			setMotor(LArm,0);
+			setMotor(RArm, 0);
+		}
+		if(getMotorEncoder(LArm) >= 1000 && armInput > 0){
+			setMotor(LArm,0);
+			setMotor(RArm, 0);
+		}
+		else{
+			setMotor(LArm, armInput);
+			setMotor(RArm, armInput);
+		}
+	}
 }

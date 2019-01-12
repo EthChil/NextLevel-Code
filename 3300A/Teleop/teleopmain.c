@@ -158,7 +158,7 @@ task main()//Shawn, Max, Daniel, And Even wrote this wonderful program
 			setMotor(LArm,0);
 			setMotor(RArm, 0);
 		}
-		if(getMotorEncoder(LArm) >= 500 && armInput > 0){
+		if(getMotorEncoder(LArm) >= 1000 && armInput > 0){
 			setMotor(LArm,0);
 			setMotor(RArm, 0);
 		}

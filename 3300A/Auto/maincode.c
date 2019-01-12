@@ -98,22 +98,6 @@ void lineFollow(tSensors sensor, int LSpeed, int RSpeed, int Thresh)
 task main()
 {
 
-	int MLsThresh, RFLsThresh;
-
-	//INIT
-	//Wait for sensors to start up
-
-	writeDebugStreamLine("%d", getColorGrayscale(RFLs));
-	writeDebugStreamLine("%d", getColorGrayscale(MLs));
-
-	sleep(1000);
-	setTouchLEDColor(TouchSensor, colorBlue);
-
-	waitUntil(getTouchLEDValue(TouchSensor));
-	setTouchLEDColor(TouchSensor, colorYellow);
-
-	MLsThresh = calcThresh(MLs);
-	RFLsThresh = calcThresh(RFLs);
 
 	MLsThresh = 80;
 	RFLsThresh = 80;
@@ -121,8 +105,6 @@ task main()
 	displayTextLine(line1, "RFLs = %d", RFLsThresh);
 	displayTextLine(line2, "MLs = %d", MLsThresh);
 
-	setTouchLEDColor(TouchSensor, colorRed);
-	waitUntil(getTouchLEDValue(TouchSensor));
 
 	resetGyro(Gyro);
 
@@ -144,27 +126,30 @@ task main()
 	//Turn 90 degrees
 	setMotor(LMotor, 80);
 	setMotor(RMotor, -15);
-	waitUntil(getGyroDegrees(Gyro) < -65);
-
-	waitForBlack(RFLs, RFLsThresh);
-
-
-int = linecount
-{repeatUntil(linecount = 1)
- {
+	waitForBlack(RFLs, RFLsThresh);{
+	waitUntil(getGyroDegrees(Gyro) < -45);
 
 
- }
+}
 
-
-while(getColorGrayscale(MLs) > MLsThresh){
+	while(getColorGrayscale(MLs) < MLsThresh){
 			lineFollow(RFLs, 50, 30, RFLsThresh);
-			while(getColorGrayscale(MLs)> MLsThresh){
-				lineFollow(RFLs, 30, 50, RFLsThresh);
-
-			}
-		}
 	}
+	sleep(750);
+	while(getColorGrayscale(MLs) > MLsThresh){
+			lineFollow(RFLs, 30, 50, RFLsThresh);
+	}
+	sleep(750);
+	while(getColorGrayscale(MLs) < MLsThresh){
+			lineFollow(RFLs, 50, 30, RFLsThresh);
+	}
+	sleep(750);
+	while(getColorGrayscale(MLs) > MLsThresh){
+			lineFollow(RFLs, 30, 50, RFLsThresh);
+	}
+	sleep(750);
+
+
 
 }
 

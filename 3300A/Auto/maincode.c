@@ -89,6 +89,26 @@ void lineFollow(tSensors sensor, int LSpeed, int RSpeed, int Thresh)
 	}
 }
 
+void doubleLineFollow(tSensors LSensor, tSensors RSensor, int LSpeed, int RSpeed, int ThreashLeft, int ThreshRight)
+{
+		if (getColorGrayscale(LSensor) > ThreshLeft && getColorGrayscale(RSensor) > ThreshRight){
+			setMotor(LMotor, LSpeed);
+			setMotorSpeed(RMotor, RSpeed);
+		}
+		if (getColorGrayscale(LSensor) < ThreshLeft && getColorGrayscale(RSensor) > ThreshRight){
+			setMotorSpeed(LMotor, LSpeed);
+			setMotorSpeed(RMotor, RSpeed);
+		}
+		if (getColorGrayscale(RSensor) < ThreshRight && getColorGrayscale(LSensor) > ThreshLeft){
+			setMotorSpeed(LMotor, RSpeed);
+			setMotorSpeed(RMotor, LSpeed);
+		}
+		if (getColorGrayscale(RSensor) < ThreshRight && getColorGrayscale(LSensor) < ThreshLeft){
+			setMotorSpeed(LMotor, LSpeed);
+			setMotorSpeed(RMotor, LSpeed);
+		}
+	}
+
 //1. get the lightsensor value
 //2. check if that is whiter then our whitest white
 //3. check if that is blacker than our blackest black
@@ -99,8 +119,8 @@ task main()
 {
 
 
-	MLsThresh = 80;
-	RFLsThresh = 80;
+	int MLsThresh = 80;
+	int RFLsThresh = 80;
 
 	displayTextLine(line1, "RFLs = %d", RFLsThresh);
 	displayTextLine(line2, "MLs = %d", MLsThresh);
@@ -149,7 +169,7 @@ task main()
 	}
 	sleep(750);
 
-
+	waitforblack(MLs, MLsThresh);
 
 }
 

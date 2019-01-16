@@ -1,4 +1,5 @@
 #pragma config(Sensor, port7,  TouchSensor,    sensorVexIQ_LED)
+#pragma config(Sensor, port8,  LFLs,           sensorVexIQ_ColorGrayscale)
 #pragma config(Sensor, port9,  Gyro,           sensorVexIQ_Gyro)
 #pragma config(Sensor, port11, MLs,            sensorVexIQ_ColorGrayscale)
 #pragma config(Sensor, port12, RFLs,           sensorVexIQ_ColorGrayscale)
@@ -12,9 +13,10 @@
 
 
 
+
 task main()
 {
 
-repeat(forever){displayTextLine(line1, "%d", getColorGrayscale(MLs));}
+repeat(forever){displayTextLine(line1, "%d", getColorGrayscale(LFLs));}
 
 }

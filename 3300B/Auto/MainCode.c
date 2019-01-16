@@ -1,5 +1,5 @@
 #pragma config(Sensor, port7,  TouchSensor,    sensorVexIQ_LED)
-#pragma config(Sensor, port8,  RBLs,           sensorVexIQ_ColorGrayscale)
+#pragma config(Sensor, port8,  LFLs,           sensorVexIQ_ColorGrayscale)
 #pragma config(Sensor, port9,  Gyro,           sensorVexIQ_Gyro)
 #pragma config(Sensor, port11, MLs,            sensorVexIQ_ColorGrayscale)
 #pragma config(Sensor, port12, RFLs,           sensorVexIQ_ColorGrayscale)
@@ -93,7 +93,7 @@ void lineFollow(tSensors sensor, int LSpeed, int RSpeed, int Thresh){
 task auto()
 {
 
-	int RFLsThresh, MLsThresh, RBLsThresh;
+	int RFLsThresh, MLsThresh, LFLsThresh;
 
 	//INIT
 	//Wait for sensors to start up
@@ -109,7 +109,8 @@ task auto()
 	//RFLsThresh = calcThresh(RFLs);
 
 	MLsThresh = 90;
-	RFLsThresh = 90;
+	RFLsThresh = 80;
+	LFLsThresh = 90;
 
 
 	displayTextLine(line1, "RFLs = %d", RFLsThresh);
@@ -149,15 +150,15 @@ task auto()
 	setMotor(RMotor, 20);
 	sleep(1000);
 
-
+/*
 	while(getColorGrayscale(MLs) < MLsThresh){
 		lineFollow(RFLs, 50, 20, RFLsThresh);
 	}
 	sleep(500);
 	while(getColorGrayscale(MLs) > MLsThresh){
 		lineFollow(RFLs, 50, 20, RFLsThresh);
-	}
-	sleep(500);
+	}*/
+sleep(500);
 	while(getColorGrayscale(MLs) < MLsThresh){
 		lineFollow(RFLs, 50, 30, RFLsThresh);
 	}
@@ -186,24 +187,20 @@ task auto()
 
 	repeat(forever){
 
-	if(getColorValue(RFLs) < RFLsThresh && getColorValue(RBLs) < RBLsThresh){
-		setMotor(LMotor, 60);
-		setMotor(RMotor, 50);
+	if(getColorValue(RFLs) < RFLsThresh && getColorValue(LFLs) < LFLsThresh){
+		setMotor(LMotor, -30);
+		setMotor(RMotor, -70);
 	}
 
-	if(getColorValue(RFLs) > RFLsThresh && getColorValue(RBLs) < RBLsThresh){
-		setMotor(LMotor, 50);
-		setMotor(RMotor, 50);
+	if(getColorValue(RFLs) > RFLsThresh && getColorValue(LFLs) < LFLsThresh){
+		setMotor(LMotor, 0);
+		setMotor(RMotor, -70);
 
 	}
-	if(getColorValue(RFLs) < RFLsThresh && getColorValue(RBLs) > RBLsThresh){
-		setMotor(LMotor, 50);
-		setMotor(RMotor, 60);
-	}
-	if(getColorValue(RFLs) > RFLsThresh && getColorValue(RBLs) > RBLsThresh){
-		setMotor(LMotor, 50);
-		setMotor(RMotor, 50);
-	}
+	if(getColorValue(RFLs) < RFLsThresh && getColorValue(LFLs) > LFLsThresh){
+		setMotor(LMotor, -50);
+		setMotor(RMotor, 0);
+}
 }
 
 

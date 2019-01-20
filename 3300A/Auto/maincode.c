@@ -146,43 +146,46 @@ task main()
 
 	//Turn 60 degrees
 	setMotor(LMotor, 80);
-	setMotor(RMotor, -15);
+	setMotor(RMotor, -20);
 
 	waitUntil(getGyrodegrees(Gyro) < -45);
 
 	setMotor(LMotor, 80);
-	setMotor(RMotor, 0);
+	setMotor(RMotor, -10);
 	waitForBlack(RFLs, RFLsThresh);
+
+	setMotor(LMotor, 50);
+	setMotor(RMotor, 20);
+	sleep(750);
+
 
 	//Line counting
 
 
 
 while(getColorGrayscale(MLs) < MLsThresh){
-	if(getColorGrayscale(RFLs) > RFLsThresh){
-		setMotor(LMotor, 70);
-		setMotor(RMotor, 20);
+	if(getColorGrayscale(RFLs) < RFLsThresh){
+		setMotor(LMotor, 60);
+		setMotor(RMotor, 30);
 	}else{
 		setMotor(LMotor, 30);
-		setMotor(RMotor, 50);
+		setMotor(RMotor, 60);
 	}
 }
 
-setMotor(LMotor, 50);
-setMotor(RMotor, 50);
 
-sleep(500);
 
 
 while(getColorGrayscale(MLs) > MLsThresh){
-	if(getColorGrayscale(RFLs) > RFLsThresh){
-		setMotor(LMotor, 70);
-		setMotor(RMotor, 20);
+	if(getColorGrayscale(RFLs) < RFLsThresh){
+		setMotor(LMotor, 80);
+		setMotor(RMotor, 30);
 	}else{
 		setMotor(LMotor, 30);
-		setMotor(RMotor, 50);
+		setMotor(RMotor, 80);
 	}
 }
+
 
 /*
 

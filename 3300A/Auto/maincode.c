@@ -120,7 +120,7 @@ task main()
 {
 
 
-	int MLsThresh = 80;
+	int MLsThresh = 50;
 	int RFLsThresh = 80;
 
 	displayTextLine(line1, "RFLs = %d", RFLsThresh);
@@ -149,22 +149,42 @@ task main()
 	setMotor(RMotor, -15);
 
 	waitUntil(getGyrodegrees(Gyro) < -45);
+
+	setMotor(LMotor, 80);
+	setMotor(RMotor, 0);
 	waitForBlack(RFLs, RFLsThresh);
 
 	//Line counting
 
 
 
-while(getColorGrayscale(RFLs) < MLsThresh){
-	lineFollow(RFLs, 50, 30, RFLsThresh);
+while(getColorGrayscale(MLs) < MLsThresh){
+	if(getColorGrayscale(RFLs) > RFLsThresh){
+		setMotor(LMotor, 70);
+		setMotor(RMotor, 20);
+	}else{
+		setMotor(LMotor, 30);
+		setMotor(RMotor, 50);
+	}
 }
-sleep(750);
-while(getColorGrayscale(RFLs) > MLsThresh){
-	lineFollow(RFLs, 50, 30, RFLsThresh);
-}
-sleep(750);
 
-waitforblack(MLs, MLsThresh);
+setMotor(LMotor, 50);
+setMotor(RMotor, 50);
+
+sleep(500);
+
+
+while(getColorGrayscale(MLs) > MLsThresh){
+	if(getColorGrayscale(RFLs) > RFLsThresh){
+		setMotor(LMotor, 70);
+		setMotor(RMotor, 20);
+	}else{
+		setMotor(LMotor, 30);
+		setMotor(RMotor, 50);
+	}
+}
+
+/*
 
 
 
@@ -172,9 +192,9 @@ waitforblack(MLs, MLsThresh);
 
 setMotorTarget(LHerder, -70, 20);
 setMotorTarget(RHerder, -70, 20);
-}
-/**/
 
+/**/
+}
 //Turn 45 degrees then start waiting on the lightSensor
 //Agressive line follow
 

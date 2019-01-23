@@ -155,8 +155,8 @@ task main()
 	waitForBlack(RFLs, RFLsThresh);
 
 	setMotor(LMotor, 50);
-	setMotor(RMotor, 20);
-	sleep(750);
+	setMotor(RMotor, 30);
+	sleep (800);
 
 
 	//Line counting
@@ -164,7 +164,7 @@ task main()
 
 
 while(getColorGrayscale(MLs) < MLsThresh){
-	if(getColorGrayscale(RFLs) < RFLsThresh){
+	if(getColorGrayscale(RFLs) > RFLsThresh){
 		setMotor(LMotor, 60);
 		setMotor(RMotor, 30);
 	}else{
@@ -177,7 +177,7 @@ while(getColorGrayscale(MLs) < MLsThresh){
 
 
 while(getColorGrayscale(MLs) > MLsThresh){
-	if(getColorGrayscale(RFLs) < RFLsThresh){
+	if(getColorGrayscale(RFLs) > RFLsThresh){
 		setMotor(LMotor, 80);
 		setMotor(RMotor, 30);
 	}else{

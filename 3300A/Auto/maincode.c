@@ -1,5 +1,4 @@
-#pragma config(Sensor, port2,  LFLs,          sensorVexIQ_ColorGrayscale)
-#pragma config(Sensor, port3,  TouchSensor,    sensorVexIQ_LED)
+#pragma config(Sensor, port2,  LFLs,           sensorVexIQ_ColorGrayscale)
 #pragma config(Sensor, port4,  Gyro,           sensorVexIQ_Gyro)
 #pragma config(Sensor, port5,  RFLs,           sensorVexIQ_ColorGrayscale)
 #pragma config(Sensor, port6,  MLs,            sensorVexIQ_ColorGrayscale)
@@ -13,9 +12,10 @@
 
 void waitForMotor(tMotor nMotorIndex) {
 
-	while(getMotorZeroVelocity(nMotorIndex)){sleep(10);} //wait for the motor to start moving
+	while(getMotorZeroVelocity(nMotorIndex)){sleep(10);} //wait for the motor to start movisscanf
 
 	while(!getMotorZeroVelocity(nMotorIndex)){sleep(10);} //wait for the motor to stop moving
+	sleep(150);
 }
 
 // this code is made by Shawn and Max and Daniel and Even.
@@ -159,7 +159,7 @@ task main()
 	waitUntil(getGyrodegrees(Gyro) < -45);
 
 	setMotor(LMotor, 80);
-	setMotor(RMotor, -10);
+	setMotor(RMotor, -20);
 	waitForBlack(RFLs, RFLsThresh);
 
 	setMotor(LMotor, 50);
@@ -174,7 +174,7 @@ task main()
 	while(getColorGrayscale(MLs) < MLsThresh){
 		if(getColorGrayscale(RFLs) > RFLsThresh){
 			setMotor(LMotor, 80);
-			setMotor(RMotor, 30);
+			setMotor(RMotor, 20);
 			}else{
 			setMotor(LMotor, 30);
 			setMotor(RMotor, 80);
@@ -187,14 +187,22 @@ task main()
 	while(getColorGrayscale(MLs) > MLsThresh){
 		if(getColorGrayscale(RFLs) > RFLsThresh){
 			setMotor(LMotor, 60);
-			setMotor(RMotor, 30);
+			setMotor(RMotor, 40);
 			}else{
-			setMotor(LMotor, 30);
+			setMotor(LMotor, 40);
 			setMotor(RMotor, 60);
 		}
 	}
+	setMotor(RMotor, 0);
+	setMotor(LMotor, 0);
+	resetMotorEncoder (RMotor);
+	setMotorTarget(RMotor, 40, 60);
+	waitForMotor(RMotor);
 	setMotorTarget(RHerder, 0, 20);
 	sleep(500);
+	setMotorTarget(RMotor, 0, 60);
+	waitForMotor(RMotor);
+
 	//drive backwards
 	setMotor( LMotor, -50);
 	setMotor(RMotor, -50);
@@ -207,7 +215,7 @@ task main()
 
 	//grabing the 2nd set of hubs
 	resetMotorEncoder(RMotor);
-	setMotorTarget(RMotor, 160, 50);
+	setMotorTarget(RMotor, 190, 50);
 	waitForMotor(RMotor);
 
 	setMotor(RMotor, 50);
@@ -222,20 +230,20 @@ task main()
 			setMotor(RMotor, 20);
 			}else{
 			setMotor(LMotor, 20);
-			setMotor(RMotor, 50);
+			setMotor(RMotor, 40);
 
 		}
 	}
 
 	setMotor(RMotor, -20);
 	setMotor(LMotor, 50);
-	setMotorTarget(LHerder, 40, 50);
-	sleep(1000);
+	setMotorTarget(LHerder, 50, 50);
+	sleep(500);
 	setMotor(LMotor, 0);
 	setMotor(RMotor, 0);
-	setMotorTarget(Lherder, 0, 50);
+	setMotorTarget(Lherder, 0, 70);
 	sleep(1000);
-
+	/**/
 
 
 }

@@ -154,7 +154,7 @@ task main()
 	setMotorTarget(RHerder, 70, 20);
 
 	//Turn 60 degrees
-	setMotor(LMotor, 80);
+	setMotor(LMotor, 90);
 	setMotor(RMotor, -20);
 
 	waitUntil(getGyrodegrees(Gyro) < -45);
@@ -197,9 +197,9 @@ task main()
 	setMotor(RMotor, 0);
 	setMotor(LMotor, 0);
 	resetMotorEncoder (RMotor);
-	setMotorTarget(RMotor, 40, 60);
+	setMotorTarget(RMotor, 60, 60);
 	waitForMotor(RMotor);
-	setMotorTarget(RHerder, 0, 20);
+	setMotorTarget(RHerder, 0, 50);
 	sleep(500);
 	setMotorTarget(RMotor, 0, 60);
 	waitForMotor(RMotor);
@@ -236,37 +236,45 @@ task main()
 		}
 	}
 
+
+
 	setMotor(RMotor, -20);
 	setMotor(LMotor, 50);
 	setMotorTarget(LHerder, 50, 50);
-	sleep(500);
+	sleep(750);
 	setMotor(LMotor, 0);
 	setMotor(RMotor, 0);
-	setMotorTarget(Lherder, 0, 70);
+	setMotorTarget(LHerder, 0, 70);
 	sleep(1000);
 
-
-	resetGyro(Gyro);
-
 	//raise arm up before backing up into the wall
-	resetMotorEncoder(LArm);
-	resetMotorEncoder(RArm);
-	setMotorTarget(LArm, 300, 50);
-	setMotorTarget(RArm, 300, 50);
-	sleep(2000)
-}
-	/*
-	//turn 90 degree
+	setMotorTarget(LArm, 340, 50);
+	setMotorTarget(RArm, 340, 50);
+
 	setMotor(LMotor, -50);
 	setMotor(RMotor, 50);
+	while(getGyroDegrees(Gyro) < -20){ sleep(10);}
 
-	waitUntil(getGyrodegrees(Gyro) < 90);
+	resetMotorEncoder(LMotor);
+	resetMotorEncoder(RMotor);
+	setMotorTarget(LMotor, 360, 50);
+	setMotorTarget(RMotor, 360, 50);
+
+	sleep(4000);
 
 
+	/**/
 }
+
+
 /*
+//turn 90 degree
+setMotor(LMotor, -50);
+setMotor(RMotor, 50);
 
+waitUntil(gyro=>90)
 
+/*
 
 //Grabbing Hubs
 

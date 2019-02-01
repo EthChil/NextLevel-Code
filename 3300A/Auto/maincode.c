@@ -1,6 +1,6 @@
 #pragma config(Sensor, port1,  nosensor,       sensorNone)
 #pragma config(Sensor, port2,  LFLs,           sensorVexIQ_ColorGrayscale)
-#pragma config(Sensor, port3,  nosensor,       sensorNone)
+#pragma config(Sensor, port3,  Touch,          sensorVexIQ_LED)
 #pragma config(Sensor, port4,  Gyro,           sensorVexIQ_Gyro)
 #pragma config(Sensor, port5,  RFLs,           sensorVexIQ_ColorGrayscale)
 #pragma config(Sensor, port6,  MLs,            sensorVexIQ_ColorGrayscale)
@@ -16,6 +16,18 @@ void waitForMotor(tMotor nMotorIndex)  //wait for the motor to start movisscanf
 {	while(getMotorZeroVelocity(nMotorIndex)){sleep(10);}
 	while(!getMotorZeroVelocity(nMotorIndex)){sleep(10);} //wait for the motor to stop moving
 	sleep(150);
+}
+
+void drive(int L, int R)
+{
+	setMotor(LMotor, L);
+	setMotor(RMotor, R);
+}
+
+void moveArm(int pos, int speed)
+{
+	setMotorTarget(LArm, pos, speed);
+	setMotorTarget(RArm, pos, speed);
 }
 
 // this code is made by Shawn and Max and Daniel and Even.
@@ -153,7 +165,7 @@ task main()
 	setMotorTarget(LHerder, 70, 20);
 	setMotorTarget(RHerder, 70, 20);
 
-	//Turn 60 degrees
+	//Turn 45 degrees
 	setMotor(LMotor, 90);
 	setMotor(RMotor, -20);
 
@@ -163,17 +175,19 @@ task main()
 	setMotor(RMotor, -20);
 	waitForBlack(RFLs, RFLsThresh);
 
-	setMotor(LMotor, 80);
+	setMotor(LMotor, 90);
 	setMotor(RMotor, 20);
-	sleep (800);
-	setMotor(LMotor, 40);
-	setMotor(RMotor, 50);
-	sleep(700);
+	sleep(800);
+
+	long stamp = nPgmTime;
+
+	while(nPgmTime - stamp < 800)
+	{
+		LineFollow(RFLs, 80, 20, RFLsThresh);
+	}
+
 
 	//Line counting
-
-
-
 	while(getColorGrayscale(MLs) < MLsThresh){
 		if(getColorGrayscale(RFLs) > RFLsThresh){
 			setMotor(LMotor, 80);
@@ -184,9 +198,6 @@ task main()
 		}
 	}
 
-
-
-
 	while(getColorGrayscale(MLs) > MLsThresh){
 		if(getColorGrayscale(RFLs) > RFLsThresh){
 			setMotor(LMotor, 60);
@@ -196,6 +207,8 @@ task main()
 			setMotor(RMotor, 60);
 		}
 	}
+
+
 	setMotor(RMotor, 0);
 	setMotor(LMotor, 0);
 	resetMotorEncoder (RMotor);
@@ -243,11 +256,14 @@ task main()
 	setMotor(RMotor, -20);
 	setMotor(LMotor, 50);
 	setMotorTarget(LHerder, 50, 50);
-	sleep(400);
+	sleep(700);
 	setMotor(LMotor, 0);
 	setMotor(RMotor, 0);
 	setMotorTarget(LHerder, 0, 70);
 	sleep(1000);
+
+	//Grabbed the last hub in the herder
+
 
 	setMotor(LMotor, -50);
 	setMotor(RMotor, 50);
@@ -255,13 +271,13 @@ task main()
 
 	resetMotorEncoder(RMotor);
 	resetMotorEncoder(LMotor);
-	setMotorTarget(LMotor,-275,50);
-	setMotorTarget(RMotor,-275,50);
-	sleep(1000);
+	setMotorTarget(LMotor,-400,50);
+	setMotorTarget(RMotor,-400,50);
+	waitForMotor(LMotor);
 
-	setMotor(LMotor, -50);
-	setMotor(RMotor, 50);
-	while(getGyroDegrees(Gyro) < -50){ sleep(10);}
+	//setMotor(LMotor, -50);
+	//setMotor(RMotor, 50);
+	//while(getGyroDegrees(Gyro) < -50){ sleep(10);}
 
 	setMotor(RMotor, -50);
 	setMotor(LMotor, 50);
@@ -283,7 +299,7 @@ task main()
 		setMotor(RMotor, -50);
 	}
 
-	sleep(2500);
+	sleep(3000);
 	while(getColorGrayscale(MLs) > MLsThresh){
 		setMotor(LMotor, -50);
 		setMotor(RMotor, -50);
@@ -298,6 +314,9 @@ task main()
 		setMotor(LMotor, -50);
 		setMotor(RMotor, -50);
 	}
+
+	moveArm(400, 50);
+
 	setMotor(RMotor, -70);
 	setMotor(LMotor, -40);
 	sleep(1000);
@@ -305,12 +324,15 @@ task main()
 	setMotor(RMotor, 0);
 	setMotor(LMotor, 0);
 
-	while(getGyroDegrees(Gyro) > -180){ sleep(10);
+	resetMotorEncoder(LMotor);
+	setMotorTarget(LMotor, 200, 50);
+	setMotor(RMotor, -50);
 
+	while(getGyroDegrees(Gyro) > -200) sleep(10);
+	waitForBlack(LFLs, LFLsThresh);
 
-	}
-
-
+	drive(30, 30);
+	sleep(4000);
 
 
 	/*

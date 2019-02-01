@@ -128,7 +128,7 @@ task main()
 {
 
 
-	int MLsThresh = 50;
+	int MLsThresh = 85;
 	int RFLsThresh = 80;
 	int LFLsThresh = 80;
 
@@ -166,7 +166,9 @@ task main()
 	setMotor(LMotor, 80);
 	setMotor(RMotor, 20);
 	sleep (800);
-
+	setMotor(LMotor, 40);
+	setMotor(RMotor, 50);
+	sleep(700);
 
 	//Line counting
 
@@ -241,40 +243,101 @@ task main()
 	setMotor(RMotor, -20);
 	setMotor(LMotor, 50);
 	setMotorTarget(LHerder, 50, 50);
-	sleep(750);
+	sleep(400);
 	setMotor(LMotor, 0);
 	setMotor(RMotor, 0);
 	setMotorTarget(LHerder, 0, 70);
 	sleep(1000);
 
+	setMotor(LMotor, -50);
+	setMotor(RMotor, 50);
+	while(getGyroDegrees(Gyro) < -65){ sleep(10);}
+
+	resetMotorEncoder(RMotor);
+	resetMotorEncoder(LMotor);
+	setMotorTarget(LMotor,-275,50);
+	setMotorTarget(RMotor,-275,50);
+	sleep(1000);
+
+	setMotor(LMotor, -50);
+	setMotor(RMotor, 50);
+	while(getGyroDegrees(Gyro) < -50){ sleep(10);}
+
+	setMotor(RMotor, -50);
+	setMotor(LMotor, 50);
+	while(getGyroDegrees(Gyro) > -90){ sleep(10);}
+	setMotor(LMotor, 30);
+	setMotor(RMotor, 30);
+	sleep(3000);
+
+	//UP AGAINST WALL
+	setMotor(LMotor, -60);
+	setMotor(RMotor, -60);
+	sleep(1750);
+
+
+
+
+	while(getColorGrayscale(MLs) < MLsThresh){
+		setMotor(LMotor, -50);
+		setMotor(RMotor, -50);
+	}
+
+	sleep(2500);
+	while(getColorGrayscale(MLs) > MLsThresh){
+		setMotor(LMotor, -50);
+		setMotor(RMotor, -50);
+	}
+
+	while(getColorGrayscale(MLs) < MLsThresh){
+		setMotor(LMotor, -50);
+		setMotor(RMotor, -50);
+	}
+
+	while(getColorGrayscale(MLs) > MLsThresh){
+		setMotor(LMotor, -50);
+		setMotor(RMotor, -50);
+	}
+	setMotor(RMotor, -70);
+	setMotor(LMotor, -40);
+	sleep(1000);
+	waitForBlack(RFLs, RFLsThresh);
+	setMotor(RMotor, 0);
+	setMotor(LMotor, 0);
+
+	while(getGyroDegrees(Gyro) > -180){ sleep(10);
+
+
+	}
+
+
+
+
+	/*
 	//raise arm up before backing up into the wall
 	setMotorTarget(LArm, 340, 50);
 	setMotorTarget(RArm, 340, 50);
 
 	setMotor(LMotor, -50);
 	setMotor(RMotor, 50);
-	while(getGyroDegrees(Gyro) < -17){ sleep(10);}
+	while(getGyroDegrees(Gyro) < -22){ sleep(10);}
 
 	resetMotorEncoder(LMotor);
 	resetMotorEncoder(RMotor);
-	setMotorTarget(LMotor, 900, 50);
-	setMotorTarget(RMotor, 900, 50);
-
+	setMotorTarget(LMotor, 950, 50);
+	setMotorTarget(RMotor, 950, 50);
 	sleep(4000);
 
+
 	resetMotorEncoder(LMotor);
-	setMotorTarget(LMotor, -200, 20);
+	setMotorTarget(LMotor, -250, 20);
 	setMotor(RMotor, -60);
-	while(getGyroDegrees(Gyro) > -100)
-	{
-		setMotor(RMotor, -60);
-		sleep(2000);
-		setMotor(RMotor, 0);
-		sleep(500);
-	}
+	while(getGyroDegrees(Gyro) > -100){sleep(25);}
+
 
 
 	/**/
+
 }
 
 

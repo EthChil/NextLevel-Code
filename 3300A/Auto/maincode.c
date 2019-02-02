@@ -175,9 +175,9 @@ task main()
 	setMotor(RMotor, -20);
 	waitForBlack(RFLs, RFLsThresh);
 
-	setMotor(LMotor, 90);
-	setMotor(RMotor, 20);
-	sleep(800);
+	setMotor(LMotor, 70);
+	setMotor(RMotor, 30);
+	sleep(600);
 
 	long stamp = nPgmTime;
 
@@ -190,11 +190,11 @@ task main()
 	//Line counting
 	while(getColorGrayscale(MLs) < MLsThresh){
 		if(getColorGrayscale(RFLs) > RFLsThresh){
-			setMotor(LMotor, 80);
-			setMotor(RMotor, 20);
+			setMotor(LMotor, 70);
+			setMotor(RMotor, 30);
 			}else{
 			setMotor(LMotor, 30);
-			setMotor(RMotor, 80);
+			setMotor(RMotor, 70);
 		}
 	}
 
@@ -231,7 +231,7 @@ task main()
 
 	//grabing the 2nd set of hubs
 	resetMotorEncoder(RMotor);
-	setMotorTarget(RMotor, 190, 50);
+	setMotorTarget(RMotor, 199, 50);
 	waitForMotor(RMotor);
 
 	setMotor(RMotor, 50);
@@ -256,7 +256,7 @@ task main()
 	setMotor(RMotor, -20);
 	setMotor(LMotor, 50);
 	setMotorTarget(LHerder, 50, 50);
-	sleep(700);
+	while(getGyroDegrees(Gyro) > -110) sleep(10);
 	setMotor(LMotor, 0);
 	setMotor(RMotor, 0);
 	setMotorTarget(LHerder, 0, 70);
@@ -289,7 +289,7 @@ task main()
 	//UP AGAINST WALL
 	setMotor(LMotor, -60);
 	setMotor(RMotor, -60);
-	sleep(1750);
+	sleep(2250);
 
 
 
@@ -299,40 +299,92 @@ task main()
 		setMotor(RMotor, -50);
 	}
 
-	sleep(3000);
+	sleep(2750);
 	while(getColorGrayscale(MLs) > MLsThresh){
 		setMotor(LMotor, -50);
-		setMotor(RMotor, -50);
+		setMotor(RMotor, -55);
 	}
 
 	while(getColorGrayscale(MLs) < MLsThresh){
 		setMotor(LMotor, -50);
-		setMotor(RMotor, -50);
+		setMotor(RMotor, -55);
 	}
 
 	while(getColorGrayscale(MLs) > MLsThresh){
 		setMotor(LMotor, -50);
-		setMotor(RMotor, -50);
+		setMotor(RMotor, -60);
 	}
 
-	moveArm(400, 50);
+	moveArm(390, 50);
 
 	setMotor(RMotor, -70);
-	setMotor(LMotor, -40);
+	setMotor(LMotor, -20);
 	sleep(1000);
 	waitForBlack(RFLs, RFLsThresh);
 	setMotor(RMotor, 0);
 	setMotor(LMotor, 0);
 
 	resetMotorEncoder(LMotor);
-	setMotorTarget(LMotor, 200, 50);
+	resetMotorEncoder(RMotor);
+
+	setMotorTarget(LMotor, -250, 50);
+	setMotorTarget(RMotor, -250, 50);
+	waitForMotor(LMotor);
+
 	setMotor(RMotor, -50);
+	setMotor(LMotor, 50);
 
-	while(getGyroDegrees(Gyro) > -200) sleep(10);
-	waitForBlack(LFLs, LFLsThresh);
+	while(getGyroDegrees(Gyro) > -300) sleep(10);
 
-	drive(30, 30);
-	sleep(4000);
+	stamp = nPgmTime;
+	while(nPgmTime - stamp < 4000)
+	{
+		LineFollow(LFLs, 20, 80, LFLsThresh);
+	}
+	resetGyro(Gyro);
+
+	drive(-50, -50);
+	waitForBlack(MLs, MLsThresh);
+	waitForWhite(MLs, MLsThresh);
+	drive(-50, -50);
+	sleep(1000);
+
+	stamp = nPgmTime;
+	while(nPgmTime - stamp < 2000)
+	{
+		LineFollow(LFLs, 40, 60, LFLsThresh);
+	}
+
+
+	drive(-50, -50);
+	waitForBlack(MLs, MLsThresh);
+	waitForWhite(MLs, MLsThresh);
+	drive(-40 , 40);
+	while(getGyroDegrees(Gyro) < 5){ sleep(10); }
+	drive(-40, -40);
+	sleep(2500);
+	drive(-10,-30);
+	sleep(1000);
+	moveArm(280, 50);
+	waitForMotor(LArm);
+	drive(20, 20);
+	sleep(1000);
+
+
+	moveArm(400, 50);
+
+	drive(30, 90);
+	while(getGyroDegrees(Gyro) < 80) { sleep(10); }
+
+	moveArm(0, 50);
+	setMotorTarget(LHerder, 60, 50);
+	setMotorTarget(RHerder, 60, 50);
+
+	drive(50, 50);
+	sleep(2000);
+	drive(-50, -50);
+	sleep(3000);
+
 
 
 	/*
